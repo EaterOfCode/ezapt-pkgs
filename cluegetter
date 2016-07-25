@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+name="cluegetter"
+dependencies="libspf2-dev libmilter-dev libpcre3-dev ruby-dev gcc make"
+gems="fpm";
+source="git"
+git="https://github.com/Freeaqingme/ClueGetter.git"
+
+before_build() {
+    mkdir -p /opt/go;
+    wget -O/tmp/go "https://storage.googleapis.com/golang/go1.7rc3.linux-amd64.tar.gz";
+    cd /opt;
+    tar -xf /tmp/go;
+    rm /tmp/go;
+    cd /source;
+    export PATH="/opt/go/bin:$PATH";
+}
+
+build_deb() {
+    GOROOT=/opt/go make deb;
+
+    mv *.deb /result/cluegetter.deb;
+}
